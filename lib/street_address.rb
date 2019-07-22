@@ -1,6 +1,70 @@
+=begin rdoc
+
+=== Usage:
+    StreetAddress::US.parse("1600 Pennsylvania Ave, washington, dc")
+
+=== Valid Address Formats
+
+    1600 Pennsylvania Ave Washington DC 20006
+    1600 Pennsylvania Ave #400, Washington, DC, 20006
+    1600 Pennsylvania Ave Washington, DC
+    1600 Pennsylvania Ave #400 Washington DC
+    1600 Pennsylvania Ave, 20006
+    1600 Pennsylvania Ave #400, 20006
+    1600 Pennsylvania Ave 20006
+    1600 Pennsylvania Ave #400 20006
+
+=== Valid Intersection Formats
+
+    Hollywood & Vine, Los Angeles, CA
+    Hollywood Blvd and Vine St, Los Angeles, CA
+    Mission Street at Valencia Street, San Francisco, CA
+    Hollywood & Vine, Los Angeles, CA, 90028
+    Hollywood Blvd and Vine St, Los Angeles, CA, 90028
+    Mission Street at Valencia Street, San Francisco, CA, 90028
+
+==== License
+
+    Copyright (c) 2007 Riderway (Derrek Long, Nicholas Schlueter)
+
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+
+    The above copyright notice and this permission notice shall be
+    included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+    LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+    WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+==== Notes
+    If parts of the address are omitted from the original string
+    the accessor will be nil in StreetAddress::US::Address.
+
+    Example:
+    address = StreetAddress::US.parse("1600 Pennsylvania Ave, washington, dc")
+    assert address.postal_code.nil?
+
+==== Acknowledgements
+
+    This gem is a near direct port of the perl module Geo::StreetAddress::US
+    originally written by Schuyler D. Erle.  For more information see
+    http://search.cpan.org/~sderle/Geo-StreetAddress-US-0.99/
+
+=end
+
 module StreetAddress
   class US
-    VERSION = '2.0.0'
+    VERSION = '2.0.1'
 
     DIRECTIONAL = {
       "north" => "N",
@@ -546,6 +610,11 @@ module StreetAddress
       )
     end
 
+    ROUTES_LIKE_CITIES = %w(beach bottom bridge brook brooks camp canyon cape cliff cliffs fort forest ft garden glen
+                          green grove harbor island isle key lake la mission mount mountain mt pine port river spring
+                          union valley)
+    ROUTES_LIKE_CITIES.each { |k, v| STREET_TYPES_LIST.delete(k) }
+
     self.street_type_matches = {}
     STREET_TYPES.each_pair { |type,abbrv|
       self.street_type_matches[abbrv] = /\b (?: #{abbrv}|#{Regexp.quote(type)} ) \b/ix
@@ -571,12 +640,7 @@ module StreetAddress
     self.dircode_regexp = Regexp.new(DIRECTION_CODES.keys.join("|"), Regexp::IGNORECASE)
     self.zip_regexp     = /(?:(?<postal_code>\d{5})(?:-?(?<postal_code_ext>\d{4}))?)/
     self.corner_regexp  = /(?:\band\b|\bat\b|&|\@)/i
-
-    # we don't include letters in the number regex because we want to
-    # treat "42S" as "42 S" (42 South). For example,
-    # Utah and Wisconsin have a more elaborate system of block numbering
-    # http://en.wikipedia.org/wiki/House_number#Block_numbers
-    self.number_regexp = /(?<number>\d+-?\d*)(?=\D)/ix
+    self.number_regexp  = /[[:alpha:]]?[[:digit:]]+-?[[:alnum:]]*/
 
     # note that expressions like [^,]+ may scan more than you expect
     self.street_regexp = /

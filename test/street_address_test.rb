@@ -338,6 +338,32 @@ class StreetAddressUsTest < MiniTest::Test
       :state=>"VA",
       :postal_code=>"22206",
       :postal_code_ext=>nil
+    },
+    "W298N408 Kings Way Delafield, WI 53188" => {
+      :number=>"W298N408",
+      :street=>"Kings",
+      :street_type=>"Way",
+      :unit=>nil,
+      :unit_prefix=>nil,
+      :suffix=>nil,
+      :prefix=>nil,
+      :city=>"Delafield",
+      :state=>"WI",
+      :postal_code=>"53188",
+      :postal_code_ext=>nil
+    },
+    "N4785 19th Avenue, Montello, WI 53949" => {
+      :number=>"N4785",
+      :street=>"19th",
+      :street_type=>"Ave",
+      :unit=>nil,
+      :unit_prefix=>nil,
+      :suffix=>nil,
+      :prefix=>nil,
+      :city=>"Montello",
+      :state=>"WI",
+      :postal_code=>"53949",
+      :postal_code_ext=>nil
     }
   }
 
