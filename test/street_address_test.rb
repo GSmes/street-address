@@ -157,7 +157,7 @@ class StreetAddressUsTest < MiniTest::Test
       :city => 'Washington',
       :street_type => 'Ave',
     },
-    "48S 400E, Salt Lake City UT" => {
+    "48 S 400 E, Salt Lake City UT" => {
       :street_type => nil,
       :number => '48',
       :street => '400',

@@ -79,7 +79,7 @@ class AddressTest < MiniTest::Test
       :line1 => "1600 Pennsylvania Ave",
       :line2 => "Washington, DC"
     },
-    "48S 400E, Salt Lake City UT" => {
+    "48 S 400 E, Salt Lake City UT" => {
       :line1 => "48 S 400 E",
       :line2 => "Salt Lake City, UT"
     },

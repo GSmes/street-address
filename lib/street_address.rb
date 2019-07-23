@@ -546,10 +546,10 @@ module StreetAddress
       )
     end
 
-    ROUTES_LIKE_CITIES = %w(beach bottom bridge brook brooks camp canyon cape cliff cliffs fort forest ft garden glen
-                          green grove harbor island isle key lake la mission mount mountain mt pine port river spring
-                          union valley)
-    ROUTES_LIKE_CITIES.each { |k, v| STREET_TYPES_LIST.delete(k) }
+    # ROUTES_LIKE_CITIES = %w(beach bottom bridge brook brooks camp canyon cape cliff cliffs fort forest ft garden glen
+    #                       green grove harbor island isle key lake la mission mount mountain mt pine port river spring
+    #                       union valley)
+    # ROUTES_LIKE_CITIES.each { |k, v| STREET_TYPES_LIST.delete(k) }
 
     self.street_type_matches = {}
     STREET_TYPES.each_pair { |type,abbrv|
@@ -576,7 +576,7 @@ module StreetAddress
     self.dircode_regexp = Regexp.new(DIRECTION_CODES.keys.join("|"), Regexp::IGNORECASE)
     self.zip_regexp     = /(?:(?<postal_code>\d{5})(?:-?(?<postal_code_ext>\d{4}))?)/
     self.corner_regexp  = /(?:\band\b|\bat\b|&|\@)/i
-    self.number_regexp  = /[[:alpha:]]?[[:digit:]]+-?[[:alnum:]]*/
+    self.number_regexp  = /(?<number>[a-zA-Z]?\d+-?[a-zA-Z0-9]*)(?=\D)/ix
 
     # note that expressions like [^,]+ may scan more than you expect
     self.street_regexp = /
