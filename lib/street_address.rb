@@ -591,7 +591,7 @@ module StreetAddress
 
     self.street_type_regexp = STREET_TYPES_LIST.keys.join("|")
     self.number_regexp = '\d+-?\d*'
-    self.number_regexp  = '[a-zA-Z]?\d+-?[a-zA-Z0-9]*)(?=\D)'
+    self.number_regexp  = '([a-zA-Z]?\d+-?[a-zA-Z0-9]*)(?=\D)
     self.fraction_regexp = '\d+\/\d+'
     self.state_regexp = STATE_CODES.to_a.join("|").gsub(/ /, "\\s")
     self.city_and_state_regexp = '
